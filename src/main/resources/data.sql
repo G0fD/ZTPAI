@@ -1,0 +1,4 @@
+-- insert into users(username) values ('admin1');
+-- insert into users(username) values ('admin2');
+-- insert into users(username) values ('user1');
+-- insert into users(username) values ('user2');

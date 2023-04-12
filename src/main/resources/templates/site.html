@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/mainsite.css">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.svg">
+    <title th:text="${title}"></title>
+</head>
+<body>
+<div class="base-container">
+    <main>
+        <section class="left">
+            <div class="title">
+
+            </div>
+            <div class="album">
+
+            </div>
+            <div class="photo">
+
+            </div>
+            <div class="player">
+
+            </div>
+        </section>
+
+        <section class="right">
+            <div class="genres">
+                <p>Main genres:</p>
+            </div>
+            <div class="where">
+                <p>Available on:</p>
+            </div>
+            <div class="rating">
+                <p>Did you like it?</p>
+                <form action="rate" method="POST">
+                    <select name="ratingselect" id="myselect" onchange="this.form.submit()">
+                        <option value="1">I hate it</option>
+                        <option value="2">I don't like it</option>
+                        <option value="3">Not bad, not good</option>
+                        <option value="4">I like it</option>
+                        <option value="5">I love it</option>
+                    </select>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="small-logo">
+            <img onclick="window.location='#';" src="/img/shipify.svg" alt="shipify">
+        </div>
+        <div class="search-bar">
+            <input id='inpt' type="text" name="search" placeholder="search for your fav music" autocomplete="off">
+        </div>
+        <div class="profile-link" >
+            <p onclick="window.location='profile';" >profile</p>
+            <img src="/img/undraw_pic_profile_re_lxn6 1.svg" alt="profile" onclick="window.location='profile';">
+        </div>
+    </footer>
+</div>
+</body>
+</html>

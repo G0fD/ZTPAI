@@ -9,24 +9,21 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User {
+@Table(name = "songs")
+public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column
-    private Integer id_user_details;
+    private String title;
 
     @Column
-    private Integer id_role;
+    private String author;
 
     @Column
-    private String email;
+    private String album;
 
     @Column
-    private String password;
-
-    @Column
-    private String username;
+    private String filename;
 }
