@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -26,4 +29,23 @@ public class Song{
 
     @Column
     private String filename;
+
+    @ManyToMany
+    @JoinTable(
+            name = "song_providers",
+            joinColumns = { @JoinColumn(name = "id_song")},
+            inverseJoinColumns = {@JoinColumn(name = "id_provider")}
+    )
+    Set<Provider> providers = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "song_genres",
+            joinColumns = { @JoinColumn(name = "id_song")},
+            inverseJoinColumns = {@JoinColumn(name = "id_genre")}
+    )
+    Set<Genre> genres = new HashSet<>();
+
+    @OneToMany(mappedBy = "userSong")
+    private Set<LikedBy> userLiked;
 }
