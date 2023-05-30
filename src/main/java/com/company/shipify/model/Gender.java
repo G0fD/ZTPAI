@@ -2,6 +2,7 @@ package com.company.shipify.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "genders")
@@ -23,8 +25,8 @@ public class Gender {
     private String name;
 
     @OneToMany(mappedBy = "gender")
-    private Set<UserDetails> usersDetails;
+    private Set<MyUserDetails> usersDetails;
 
     @ManyToMany(mappedBy = "preferences")
-    private Set<UserDetails> usersPreference = new HashSet<>();
+    private Set<MyUserDetails> usersPreference = new HashSet<>();
 }

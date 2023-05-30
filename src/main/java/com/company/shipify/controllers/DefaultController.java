@@ -29,6 +29,7 @@ public class DefaultController {
     public String dev(Model model){
         model.addAttribute("title", title);
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("testUser", userService.getUserByEmail("other@email.com"));
         return "dev";
     }
 
