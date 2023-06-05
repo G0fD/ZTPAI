@@ -1,8 +1,7 @@
 package com.company.shipify.auth;
 
-import com.company.shipify.dto.GenderDTO;
-import com.company.shipify.dto.UserDTO;
-import com.company.shipify.dto.UserDetailsDTO;
+import com.company.shipify.model.Genders;
+import com.company.shipify.model.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,13 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
 
-//    private UserDTO userDTO;
-//    private UserDetailsDTO detailsDTO;
-//    private GenderDTO genderDTO;
-
     private String username;
     private String password;
     private String email;
     private String name;
+    private String interested;
     private String surname;
+    private Genders gender;
+    private Roles role;
 }

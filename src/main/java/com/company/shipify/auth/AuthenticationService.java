@@ -1,27 +1,24 @@
 package com.company.shipify.auth;
 
-import com.company.shipify.dto.RoleDTO;
-import com.company.shipify.model.Gender;
+import com.company.shipify.model.Genders;
 import com.company.shipify.model.MyUserDetails;
-import com.company.shipify.model.Role;
+import com.company.shipify.model.Roles;
 import com.company.shipify.model.User;
-import com.company.shipify.repositories.RoleRepository;
 import com.company.shipify.repositories.UserDetailsRepository;
 import com.company.shipify.repositories.UserRepository;
 import com.company.shipify.security.jwt.JwtService;
+import com.company.shipify.services.GenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+    private final GenderService genderService;
     private final UserRepository repository;
     private final UserDetailsRepository details;
     private final PasswordEncoder passwordEncoder;
@@ -29,27 +26,23 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var userDetail = MyUserDetails.builder()
+        MyUserDetails userDetail = MyUserDetails.builder()
                 .email(request.getEmail())
                 .name(request.getName())
                 .surname(request.getSurname())
-                .gender(Gender.builder().name("male").id(1).build())    //fixed values
-                .preferences(
-                        Set.of(Gender.builder().name("female").id(2).build(),
-                                Gender.builder().name("other").id(3).build())
-                )
+                .gender(Genders.mapToObject(request.getGender()))
+                .preferences(genderService.getGenderSet(request.getInterested()))
                 .build();
         details.save(userDetail);
-        var user = User.builder()
+        User user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .userRole(Role.builder().name("user").id(2).build())    //fixed value
+                .userRole(Roles.mapToObject(request.getRole()))
                 .details(userDetail)
                 .build();
-
         repository.save(user);
 
-        var jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -63,10 +56,10 @@ public class AuthenticationService {
                 )
         );
 
-        var user = repository.findByUsername(request.getUsername())
+        User user = repository.findByUsername(request.getUsername())
                 .orElseThrow();
 
-        var jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

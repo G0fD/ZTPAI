@@ -10,20 +10,20 @@
     <title th:text="${title}"></title>
 </head>
 <body>
-    <p th:text="${testUser.getId()}" ></p>
-    <p th:text="${testUser.getPassword()}" ></p>
-    <p th:text="${testUser.getUsername()}" ></p>
-    <p th:text="${testUser.getDetails().getEmail()}" ></p>
-    <p th:text="${testUser.getUserRole().getName()}" ></p>
-        <h2>Users:</h2>
-    <table>
-        <thead>
-            <tr>ID</tr>
-            <tr>Username</tr>
-        </thead>
-        <tbody>
+<p th:text="${testUser.get.getId()}"></p>
+<p th:text="${testUser.get().getPassword()}"></p>
+<p th:text="${testUser.get.getUsername()}"></p>
+<p th:text="${testUser.get().getDetails().getEmail()}"></p>
+<p th:text="${testUser.get().getUserRole().getName()}"></p>
+<h2>Users:</h2>
+<table>
+    <thead>
+    <tr>ID</tr>
+    <tr>Username</tr>
+    </thead>
+    <tbody>
 
-        </tbody>
-    </table>
+    </tbody>
+</table>
 </body>
 </html>

@@ -1,7 +1,6 @@
-package com.company.shipify.security.config;
+package com.company.shipify.services;
 
 import com.company.shipify.repositories.UserRepository;
-import com.company.shipify.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
