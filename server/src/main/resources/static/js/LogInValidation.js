@@ -30,6 +30,7 @@ loginForm.addEventListener("submit", function (event) {
             if (responseData.token) {
                 localStorage.setItem('token', responseData.token);
                 console.log(responseData.message);
+                window.location.href("/auth/site");
             } else {
                 console.error('Authentication failed');
             }
