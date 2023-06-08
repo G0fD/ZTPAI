@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GenderDTO {
-
-    private Integer id;
-    private String genderName;
+public class UniversalIntRequest {
+    private Integer integer;
 }

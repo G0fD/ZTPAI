@@ -1,4 +1,4 @@
-package com.company.shipify.auth;
+package com.company.shipify.dto;
 
 import com.company.shipify.model.Genders;
 import com.company.shipify.model.Roles;

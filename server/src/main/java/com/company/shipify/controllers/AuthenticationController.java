@@ -1,15 +1,12 @@
 package com.company.shipify.controllers;
 
-import com.company.shipify.auth.AuthenticationRequest;
-import com.company.shipify.auth.AuthenticationResponse;
-import com.company.shipify.auth.AuthenticationService;
-import com.company.shipify.auth.RegisterRequest;
+import com.company.shipify.dto.AuthenticationRequest;
+import com.company.shipify.dto.AuthenticationResponse;
+import com.company.shipify.dto.RegisterRequest;
+import com.company.shipify.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,6 +23,11 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authService.authenticate(request));
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<String> validate() {
+        return ResponseEntity.ok("valid");
     }
 
 }

@@ -7,6 +7,8 @@ import lombok.Data;
 @Builder
 public class LikedByDTO {
 
-    private Integer id;
-    private Double songRating;
+    private Integer userId;
+    private Integer songId;
+    private Integer songRating;
+
 }

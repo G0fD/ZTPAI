@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "id_role", nullable = false)
     private Role userRole;
 
-    @OneToMany(mappedBy = "userLike")
+    @OneToMany(mappedBy = "liker")
     private Set<LikedBy> likedByUserSet;
 
     @ManyToMany

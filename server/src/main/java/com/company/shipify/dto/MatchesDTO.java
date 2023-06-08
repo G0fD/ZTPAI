@@ -5,10 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserDetailsDTO {
-
-    private Integer id;
-    private String email;
+public class MatchesDTO {
     private String name;
     private String surname;
+    private String email;
+    private String gender;
 }

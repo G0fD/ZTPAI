@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ProviderDTO {
-
-    private Integer id;
-    private String providerName;
+public class UniversalStringRequest {
+    private String string;
 }

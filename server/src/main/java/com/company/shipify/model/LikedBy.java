@@ -2,9 +2,11 @@ package com.company.shipify.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,11 +18,11 @@ public class LikedBy {
     private Integer id;
 
     @Column
-    private Double rating;
+    private Integer rating;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", nullable = false)
-    private User userLike;
+    private User liker;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_song", nullable = false)

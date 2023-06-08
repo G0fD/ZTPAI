@@ -1,20 +1,34 @@
-<script setup>
+<script>
 import {API_URL} from "@/common/constant";
+import {useRouter} from "vue-router";
 
-async function onSubmit() {
-  const response = await fetch(API_URL + "/api/auth/authenticate", {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-    },
-    body: JSON.stringify(form.value)
-  })
-  const data = await response.json();
-  if (response.ok) {
-    sessionStorage.setItem("token", data.token)
-  }
-}
+const router = useRouter()
+
+export default {
+  mounted() {
+    if (sessionStorage.getItem('token')) {
+      fetch(API_URL + "/api/auth/validate", {
+        headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+        }
+      })
+          .then(response => response.text())
+          .then(data => {
+            if (data !== "valid") {
+              console.log("not valid")
+            } else {
+              console.log(data)
+            }
+          })
+          .catch(error => {
+            console.error(error)
+          });
+    } else {
+      router.push("login");
+    }
+  },
+};
+
 </script>
 
 <template>
@@ -25,7 +39,6 @@ async function onSubmit() {
 
         </div>
         <div class="album">
-
         </div>
         <div class="photo">
 

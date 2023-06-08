@@ -1,13 +1,15 @@
-package com.company.shipify.auth;
+package com.company.shipify.services;
 
+import com.company.shipify.dto.AuthenticationRequest;
+import com.company.shipify.dto.AuthenticationResponse;
+import com.company.shipify.dto.RegisterRequest;
 import com.company.shipify.model.Genders;
 import com.company.shipify.model.MyUserDetails;
 import com.company.shipify.model.Roles;
 import com.company.shipify.model.User;
-import com.company.shipify.repositories.UserDetailsRepository;
+import com.company.shipify.repositories.MyUserDetailsRepository;
 import com.company.shipify.repositories.UserRepository;
 import com.company.shipify.security.jwt.JwtService;
-import com.company.shipify.services.GenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,10 +22,11 @@ public class AuthenticationService {
 
     private final GenderService genderService;
     private final UserRepository repository;
-    private final UserDetailsRepository details;
+    private final MyUserDetailsRepository details;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final SecurityService securityService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         MyUserDetails userDetail = MyUserDetails.builder()

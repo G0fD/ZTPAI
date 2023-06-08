@@ -1,4 +1,4 @@
-package com.company.shipify.auth;
+package com.company.shipify.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
