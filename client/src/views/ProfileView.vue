@@ -1,16 +1,44 @@
+<script setup>
+import {useRouter} from "vue-router";
+import {useAuthenticated} from "@/composables/authenticated";
+
+const router = useRouter()
+
+useAuthenticated()
+
+function onAddSongClick() {
+  router.push({
+    name: "addSong"
+  });
+}
+
+function onLogoutClick() {
+  router.push({
+    name: "profile"
+  });
+}
+
+function onMatchesClick() {
+  router.push({
+    name: "myMatches"
+  })
+}
+
+</script>
+
 <template>
   <div class="container">
     <nav>
-      <img class="small-logo" src="/img/shipify.svg" alt="shipify" onclick="window.location='main';">
+      <!--      <img class="small-logo" src="/img/shipify.svg" alt="shipify" onclick="window.location='main';">-->
       <ul>
         <li>
-          <a href="#" class="button">Personal information</a>
+          <a href="#" class="button" @click.prevent="onLogoutClick">Settings</a>
         </li>
         <li>
-          <a href="#" class="button">Rated songs</a>
+          <a href="#" class="button" @click.prevent="onMatchesClick">My matches</a>
         </li>
         <li>
-          <a href="#" class="button">My matches</a>
+          <a href="#" class="button" @click.prevent="onAddSongClick">Add song</a>
         </li>
         <li>
         </li>
@@ -21,12 +49,13 @@
       </ul>
     </nav>
     <main>
-      <button id="logout">Log out</button>
+      <router-view></router-view>
     </main>
   </div>
 </template>
 
 <style scoped>
+
 .container {
   flex-direction: row;
   justify-content: flex-start;
@@ -109,56 +138,6 @@ main > button {
 
 main > h1 {
   height: 5vh;
-}
-
-main > form {
-  height: 75vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-main > form > .insert {
-  color: #334B49;
-  width: 100%;
-  height: 40vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-main > form > .select {
-  width: 100%;
-  height: 25vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-
-}
-
-.select > select {
-  height: 20vh;
-  margin-top: 1em;
-  font-family: 'Libre Baskerville', serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.2em;
-  text-align: center;
-  width: 45%;
-  background-color: #E5F0FF;
-  color: #064789;
-  border: 1px solid #000000;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  scrollbar-width: none;
-}
-
-.select > select::-webkit-scrollbar {
-  display: none;
-}
-
-.insert > input {
-  width: 80%;
 }
 
 .matches {

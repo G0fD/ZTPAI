@@ -10,5 +10,4 @@ public class LikedByDTO {
     private Integer userId;
     private Integer songId;
     private Integer songRating;
-
 }

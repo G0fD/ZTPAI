@@ -1,0 +1,10 @@
+plugins {
+    id 'org.siouan.frontend-jdk11'
+}
+
+frontend {
+    nodeInstallDirectory = file("${projectDir}/.node")
+    nodeVersion = '18.16.0'
+    installScript = 'ci'
+    assembleScript = 'run build'
+}

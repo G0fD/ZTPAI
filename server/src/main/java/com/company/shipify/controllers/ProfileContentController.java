@@ -7,6 +7,7 @@ import com.company.shipify.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,10 +24,9 @@ public class ProfileContentController {
         return ResponseEntity.ok(userService.getUserProfile());
     }
 
-    @GetMapping("/myProfile/matches")
-    //@RequestMapping(value = "/{id}")
+    @GetMapping("/myProfile/matches/{id}")
     public ResponseEntity<List<MatchesDTO>> myMatches(
-            //@PathVariable("id") Integer id
+            @PathVariable("id") Integer id
     ) {
         return ResponseEntity.ok(userService.getMatches());
     }

@@ -1,37 +1,65 @@
+<script setup>
+import {ref} from "vue";
+import {API_URL} from "@/common/constant";
+import {useRouter} from "vue-router";
+
+const form = ref({})
+const router = useRouter()
+let lookingFor;
+
+async function onSubmit() {
+  form.value.role = "2"
+  form.value.interested = lookingFor.join(" ")
+  const response = await fetch(API_URL + "/api/auth/register", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(form.value)
+  })
+  const data = await response.json();
+  if (response.ok) {
+    sessionStorage.setItem("token", data.token)
+    await router.push("site")
+  }
+}
+
+</script>
+
 <template>
   <div class="container">
     <div class="logo">
       <img src="/src/assets/logo.svg" alt="logo">
     </div>
     <div class="signup-container">
-      <form id="register-form" method="POST">
+      <form id="register-form" @submit.prevent.stop="onSubmit">
         <section class="title">
           <p>We're so happy you wanna join us!</p></section>
         <section class="basic">
           <p>Name:</p>
-          <input type="text" name="name" placeholder="Tony" required>
+          <input v-model="form.name" type="text" name="name" placeholder="Tony" required>
           <p>Surname: </p>
-          <input type="text" name="surname" placeholder="Stark" required>
+          <input v-model="form.surname" type="text" name="surname" placeholder="Stark" required>
           <p>Email address: </p>
-          <input type="email" name="email" placeholder="imthebest@example.com" required>
+          <input v-model="form.email" type="email" name="email" placeholder="imthebest@example.com" required>
           <p>Password: </p>
-          <input type="password" name="password" placeholder="********" required>
+          <input v-model="form.password" type="password" name="password" placeholder="********" required>
         </section>
         <section class="details">
           <p>My gender:</p>
-          <select name="sex" id="sexselect" required>
-            <option value="1">woman</option>
-            <option value="2">man</option>
+          <select v-model="form.gender" name="gender" id="genderSelect" required>
+            <option value="1">man</option>
+            <option value="2">woman</option>
             <option value="3">other</option>
           </select>
           <p>Looking for:</p>
-          <select name="lookingfor" id="lookingforselect" required>
-            <option value="1">woman</option>
-            <option value="2">man</option>
-            <option value="3">anyone</option>
+          <select v-model="lookingFor" name="lookingFor" id="lookingforselect" required multiple>
+            <option value="1">man</option>
+            <option value="2">woman</option>
+            <option value="3">other</option>
           </select>
           <p>Username: </p>
-          <input type="text" name="username" placeholder="imthebest" required>
+          <input v-model="form.username" type="text" name="username" placeholder="imthebest" required>
           <p>That's it!</p>
           <button type="submit">Sign up</button>
         </section>

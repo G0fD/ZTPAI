@@ -1,6 +1,9 @@
 package com.company.shipify.controllers;
 
-import com.company.shipify.dto.*;
+import com.company.shipify.dto.LikedByDTO;
+import com.company.shipify.dto.SearchRequest;
+import com.company.shipify.dto.SongDTO;
+import com.company.shipify.dto.UniversalIntRequest;
 import com.company.shipify.services.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +24,22 @@ public class SiteContentController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<SearchDTO>> findSong(@RequestBody SearchRequest request) {
+    public ResponseEntity<List<SongDTO>> findSong(@RequestBody SearchRequest request) {
         return ResponseEntity.ok(songService.findSongs(request));
     }
 
-    @GetMapping("/search/result")
-    @RequestMapping(value = "/{id}")
+    @GetMapping("/search/{id}")
     public ResponseEntity<SongDTO> anySong(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(songService.getSongById(UniversalIntRequest.builder().integer(id).build()));
     }
 
-    @PostMapping("/rate")
+    @PutMapping("/rate")
     public ResponseEntity<String> rateSong(@RequestBody LikedByDTO request) {
         return ResponseEntity.ok(songService.rateSong(request));
+    }
+
+    @PostMapping("/rate/get")
+    public ResponseEntity<UniversalIntRequest> getSongRate(@RequestBody LikedByDTO request) {
+        return ResponseEntity.ok(songService.getSongRating(request));
     }
 }

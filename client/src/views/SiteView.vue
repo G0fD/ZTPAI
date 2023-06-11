@@ -1,33 +1,94 @@
-<script>
+<script setup>
 import {API_URL} from "@/common/constant";
 import {useRouter} from "vue-router";
+import {useAuthenticated} from "@/composables/authenticated";
+import {onMounted, ref, watch} from "vue";
 
 const router = useRouter()
+const search = ref();
+const rating = ref(-1);
+const song = ref();
+const songs = ref([]);
+const songR = ref({});
 
-export default {
-  mounted() {
-    if (sessionStorage.getItem('token')) {
-      fetch(API_URL + "/api/auth/validate", {
-        headers: {
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-        }
-      })
-          .then(response => response.text())
-          .then(data => {
-            if (data !== "valid") {
-              console.log("not valid")
-            } else {
-              console.log(data)
-            }
-          })
-          .catch(error => {
-            console.error(error)
-          });
-    } else {
-      router.push("login");
-    }
-  },
-};
+watch(rating, () => {
+  if (rating.value !== -1) {
+    rateSong(rating.value)
+  }
+})
+
+watch(search, () => {
+  if (!search.value) {
+    songs.value = []
+    return
+  }
+  getSongs(search.value)
+})
+
+onMounted(async () => {
+  await getSongs("H")
+  song.value = songs.value[0]
+  songs.value = []
+  await getSongRating()
+})
+
+useAuthenticated()
+
+async function getSongs(searchString) {
+  const response = await fetch(API_URL + "/api/song/search", {
+    method: "POST",
+    headers: {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      searchString
+    })
+  })
+  const data = await response.json();
+  songs.value = data;
+}
+
+async function getSongRating() {
+  songR.value.songId = song.value.id
+  const response = await fetch(API_URL + "/api/song/rate/get", {
+    method: "POST",
+    headers: {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(songR.value)
+  })
+  const data = await response.json();
+  rating.value = data.integer;
+}
+
+async function rateSong(rated) {
+  songR.value.songId = song.value.id
+  songR.value.songRating = rated
+  const response = await fetch(API_URL + "/api/song/rate", {
+    method: "PUT",
+    headers: {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(songR.value)
+  })
+  await response;
+}
+
+function onSongClick(selectedSong) {
+  song.value = selectedSong
+  search.value = ""
+  getSongRating()
+  rating.value = -1
+}
+
+function goToProfile() {
+  router.push({
+    name: "profile"
+  });
+}
 
 </script>
 
@@ -36,29 +97,43 @@ export default {
     <main>
       <section class="left">
         <div class="title">
-
+          <p>{{ song?.author }}: {{ song?.title }}</p>
         </div>
         <div class="album">
+          <p>from {{ song?.album }} album</p>
         </div>
         <div class="photo">
-
+          <!--          <img :src="`@/src/assets/${song?.filename}`">-->
         </div>
         <div class="player">
-
+          <a :href="`https://www.youtube.com/results?search_query=${song?.author}+${song?.title}`" target="_blank"
+             rel="noopener noreferrer">Check on YouTube</a>
         </div>
       </section>
 
       <section class="right">
         <div class="genres">
           <p>Main genres:</p>
+          <ul>
+            <li v-for="genre in song?.genres" :key="genre">
+              {{ genre }}
+            </li>
+          </ul>
         </div>
         <div class="where">
           <p>Available on:</p>
+          <ul>
+            <li v-for="provider in song?.providers" :key="provider">
+              {{ provider }}
+            </li>
+          </ul>
+
         </div>
         <div class="rating">
           <p>Did you like it?</p>
           <form action="rate" method="POST">
-            <select name="ratingselect" id="myselect" onchange="this.form.submit()">
+
+            <select v-model="rating" name="ratingselect" id="myselect">
               <option value="1">I hate it</option>
               <option value="2">I don't like it</option>
               <option value="3">Not bad, not good</option>
@@ -71,14 +146,22 @@ export default {
     </main>
     <footer>
       <div class="small-logo">
-        <img onclick="window.location='#';" src="/img/shipify.svg" alt="shipify">
+        <!--        <img src="@/assets/shipify.svg" alt="shipify">-->
       </div>
       <div class="search-bar">
-        <input id='inpt' type="text" name="search" placeholder="search for your fav music" autocomplete="off">
+        <input v-model="search" id='inpt' type="text" name="search" placeholder="search for your fav music"
+               autocomplete="off">
+        <section class="hide-n-seek" v-if="songs.length !== 0">
+          <select class="search-result" multiple>
+            <option v-for="song in songs" :key="song.id" @click.prevent.stop="onSongClick(song)">{{ song.author }}:
+              {{ song.title }}
+            </option>
+          </select>
+        </section>
       </div>
       <div class="profile-link">
-        <p onclick="window.location='profile';">profile</p>
-        <img src="/img/undraw_pic_profile_re_lxn6 1.svg" alt="profile" onclick="window.location='profile';">
+        <p @click="goToProfile">profile</p>
+        <!--          <img src="@/assets/undraw_pic_profile_re_lxn6.svg" alt="profile" @click="goToProfile">-->
       </div>
     </footer>
   </div>
@@ -206,7 +289,6 @@ select {
 .hide-n-seek {
   margin: 0;
   padding: 0;
-  display: none;
   position: absolute;
   bottom: 10vh;
   width: 60vw;
@@ -218,6 +300,7 @@ select {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px 20px 20px 20px;
   overflow: hidden;
+  display: inline-block;
 }
 
 .search-result {

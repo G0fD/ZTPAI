@@ -2,7 +2,8 @@ insert into genders(name) values ('male');
 insert into genders(name) values ('female');
 insert into genders(name) values ('other');
 
-insert into roles(name) values ('administrator');
+insert into roles(name)
+values ('administrator');
 insert into roles(name)
 values ('user');
 
@@ -12,6 +13,8 @@ insert into providers(name)
 values ('tidal');
 insert into providers(name)
 values ('youtube');
+insert into providers(name)
+values ('soundcloud');
 
 insert into genres(name)
 values ('rap');

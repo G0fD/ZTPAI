@@ -58,7 +58,7 @@ function onRegisterClick() {
   font-style: normal;
   font-weight: 400;
   color: #064789;
-  font-size: 2.2em;
+  font-size: 1.5em;
 }
 
 main {

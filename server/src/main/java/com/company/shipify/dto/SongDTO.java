@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class SongDTO {
+public class SongDTO implements Comparable<SongDTO> {
 
     private Integer id;
     private String title;
@@ -16,4 +16,10 @@ public class SongDTO {
     private String filename;
     private List<String> genres;
     private List<String> providers;
+
+    @Override
+    public int compareTo(SongDTO otherSongDTO) {
+        return Integer.compare(this.id, otherSongDTO.getId());
+    }
+
 }
