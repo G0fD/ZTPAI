@@ -210,10 +210,6 @@ main > h1 {
     flex-direction: column;
   }
 
-  .matches {
-    overflow: unset;
-  }
-
   .matches > p {
     font-size: 1.5em;
   }

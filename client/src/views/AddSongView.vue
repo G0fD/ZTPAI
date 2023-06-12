@@ -38,15 +38,12 @@ function addSong(event) {
   formData.append('album', form.value.album)
   formData.append('providers', form.value.providers)
   formData.append('genres', form.value.genres)
-  // formData.append('data', new Blob([JSON.stringify(form)], { type: 'application/json' }));
-
 
   fetch(API_URL + "/api/auth/addSong", {
     method: 'POST',
     body: formData,
     headers: {
       'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-      //'Content-Type': 'multipart/form-data',
     }
   })
 

@@ -4,11 +4,15 @@ import {useRouter} from "vue-router";
 const router = useRouter()
 
 function onLoginClick() {
-  router.push("login")
+  router.push({
+    name:"login"
+  })
 }
 
 function onRegisterClick() {
-  router.push("register")
+  router.push({
+    name:"register"
+  })
 }
 </script>
 
@@ -64,9 +68,8 @@ function onRegisterClick() {
 main {
   height: 50vh;
   width: 100%;
-  margin: 0;
   padding: 0;
-  margin-top: 5vh;
+  margin: 5vh 0 0;
   background: #334B49;
   border-radius: 25px 25px 0 0;
 

@@ -190,14 +190,6 @@ button {
   font-size: 2.5vh;
 }
 
-.no-valid {
-  border: 3px solid red;
-  border-radius: 1em;
-  box-shadow: 0 0 0.2em red;
-  outline: none;
-}
-
-
 @media only screen and (max-device-width: 440px) {
 
   * {
