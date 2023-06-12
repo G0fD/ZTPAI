@@ -7,6 +7,12 @@ import {useAuthenticated} from "@/composables/authenticated";
 const matches = ref([])
 
 onMounted(async () => {
+  await fetch(API_URL + "/api/auth/match", {
+    headers: {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    }
+  })
+
   const response = await fetch(API_URL + "/api/auth/myProfile/matches", {
     headers: {
       'Authorization': `Bearer ${sessionStorage.getItem('token')}`
@@ -14,14 +20,6 @@ onMounted(async () => {
   })
   const data = await response.json()
   matches.value = data
-})
-
-onMounted(async () => {
-  await fetch(API_URL + "/api/auth/match", {
-    headers: {
-      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-    }
-  })
 })
 
 useAuthenticated()

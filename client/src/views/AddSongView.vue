@@ -19,7 +19,6 @@ onMounted(() => {
       .then(response => response.text())
       .then(data => {
         if (data !== "administrator") {
-          console.log("not admin")
           router.push({
             name: "profile"
           });

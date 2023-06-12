@@ -42,7 +42,6 @@ onMounted(() => {
       .then(response => response.text())
       .then(data => {
         userType.value = data
-        console.log(userType.value)
       })
       .catch(error => {
         console.error(error)

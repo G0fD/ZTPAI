@@ -20,12 +20,9 @@ export const useAuthenticated = () => {
             .then(response => response.text())
             .then(data => {
                 if (data !== "valid") {
-                    console.log("not valid")
                     router.push({
                         name: "login"
                     });
-                } else {
-                    console.log(data)
                 }
             })
             .catch(error => {
