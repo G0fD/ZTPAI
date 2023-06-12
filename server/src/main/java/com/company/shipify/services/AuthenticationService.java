@@ -3,10 +3,8 @@ package com.company.shipify.services;
 import com.company.shipify.dto.AuthenticationRequest;
 import com.company.shipify.dto.AuthenticationResponse;
 import com.company.shipify.dto.RegisterRequest;
-import com.company.shipify.model.Genders;
-import com.company.shipify.model.MyUserDetails;
-import com.company.shipify.model.Roles;
-import com.company.shipify.model.User;
+import com.company.shipify.model.*;
+import com.company.shipify.repositories.LikedByRepository;
 import com.company.shipify.repositories.MyUserDetailsRepository;
 import com.company.shipify.repositories.UserRepository;
 import com.company.shipify.security.jwt.JwtService;
@@ -17,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final SecurityService securityService;
     private final UserRepository userRepository;
+    private final LikedByRepository likedByRepository;
+    private final SongService songService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         MyUserDetails userDetail = MyUserDetails.builder()
@@ -75,5 +77,23 @@ public class AuthenticationService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByUsername(authentication.getName()).get();
         return user.getUserRole().getName();
+    }
+
+    public void getMatches() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User mainUser = userRepository.findByUsername(authentication.getName()).get();
+
+        List<LikedBy> likedByUser = likedByRepository.findAllByLiker(mainUser);
+        for (LikedBy lb : likedByUser) {
+            Song song = lb.getUserSong();
+            List<LikedBy> matchingLikedByList = likedByRepository.findAllByUserSongAndLikerNot(song, mainUser);
+            for (LikedBy matchingLikedBy : matchingLikedByList) {
+                User matchedUser = matchingLikedBy.getLiker();
+                mainUser.getMatchedUser1().add(matchedUser);
+                matchedUser.getMatchedUser2().add(mainUser);
+                userRepository.save(matchedUser);
+            }
+        }
+        userRepository.save(mainUser);
     }
 }

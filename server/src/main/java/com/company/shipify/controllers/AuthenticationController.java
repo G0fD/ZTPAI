@@ -35,4 +35,9 @@ public class AuthenticationController {
         return ResponseEntity.ok(authService.isAdmin());
     }
 
+    @GetMapping("/match")
+    public ResponseEntity<Void> getMatches() {
+        authService.getMatches();
+        return ResponseEntity.ok().build();
+    }
 }

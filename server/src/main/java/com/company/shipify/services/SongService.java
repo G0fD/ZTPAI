@@ -28,6 +28,10 @@ public class SongService {
     private final LikedByRepository likedByRepository;
     private final UserRepository userRepository;
 
+    public List<Song> getAllSongs() {
+        return songRepository.findAll();
+    }
+
     public List<SongDTO> findSongs(SearchRequest request) {
         List<SongDTO> songs = new ArrayList<>();
         String searchString = request.getSearchString();

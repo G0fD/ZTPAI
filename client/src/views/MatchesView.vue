@@ -16,6 +16,14 @@ onMounted(async () => {
   matches.value = data
 })
 
+onMounted(async () => {
+  await fetch(API_URL + "/api/auth/match", {
+    headers: {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    }
+  })
+})
+
 useAuthenticated()
 
 </script>
