@@ -1,9 +1,10 @@
 package com.company.shipify.services;
 
-import com.company.shipify.dto.*;
-import com.company.shipify.model.LikedBy;
-import com.company.shipify.model.Song;
-import com.company.shipify.model.User;
+import com.company.shipify.dto.LikedByDTO;
+import com.company.shipify.dto.SearchRequest;
+import com.company.shipify.dto.SongDTO;
+import com.company.shipify.dto.UniversalIntRequest;
+import com.company.shipify.model.*;
 import com.company.shipify.repositories.LikedByRepository;
 import com.company.shipify.repositories.SongRepository;
 import com.company.shipify.repositories.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 @Service
@@ -125,14 +127,53 @@ public class SongService {
 
     }
 
-    public UniversalStringRequest addSong(MultipartFile file, SongDTO request) throws IOException {
-        String filepath = "/server/src/main/resources/img" + file.getOriginalFilename();
+    public UniversalIntRequest addSong(SongDTO request, MultipartFile file) throws IOException {
+        String filepath = "C:\\ZTPAI\\shipify\\server\\src\\main\\resources\\img\\" + file.getOriginalFilename();
         file.transferTo(new File(filepath));
+
+
         if (file.getOriginalFilename().isEmpty()) {
-            return null;
+            return UniversalIntRequest.builder()
+                    .integer(0)
+                    .build();
         }
-        return UniversalStringRequest.builder()
-                .string("success")
+
+        Set<Provider> providers = new HashSet<>();
+        Set<Genre> genres = new HashSet<>();
+
+        for (String s : request.getProviders()) {
+            Provider provider = providerService.getProviderById(Integer.parseInt(s));
+            providers.add(provider);
+        }
+        for (String s : request.getGenres()) {
+            Genre genre = genreService.getGenreById(Integer.parseInt(s));
+            genres.add(genre);
+        }
+
+        Song song = Song.builder()
+                .title(request.getTitle())
+                .author(request.getAuthor())
+                .album(request.getAlbum())
+                .filename(file.getOriginalFilename())
+                .providers(providers)
+                .genres(genres)
                 .build();
+
+        songRepository.save(song);
+
+        return UniversalIntRequest.builder()
+                .integer(1)
+                .build();
+    }
+
+    public byte[] getImage(String filename) throws IOException {
+        String filePath = "C:\\ZTPAI\\shipify\\server\\src\\main\\resources\\img\\";
+        return Files.readAllBytes(new File(filePath + filename).toPath());
+    }
+
+    public byte[] getSongImageById(Integer id) throws IOException {
+        String filePath = "C:\\ZTPAI\\shipify\\server\\src\\main\\resources\\img\\";
+        Song song = songRepository.getReferenceById(id);
+        return Files.readAllBytes(new File(filePath + song.getFilename()).toPath());
     }
 }

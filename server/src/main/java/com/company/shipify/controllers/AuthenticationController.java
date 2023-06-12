@@ -30,4 +30,9 @@ public class AuthenticationController {
         return ResponseEntity.ok("valid");
     }
 
+    @GetMapping("validate/isAdmin")
+    public ResponseEntity<String> isAdmin() {
+        return ResponseEntity.ok(authService.isAdmin());
+    }
+
 }

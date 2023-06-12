@@ -10,6 +10,7 @@ const rating = ref(-1);
 const song = ref();
 const songs = ref([]);
 const songR = ref({});
+const image = ref(null);
 
 watch(rating, () => {
   if (rating.value !== -1) {
@@ -103,7 +104,7 @@ function goToProfile() {
           <p>from {{ song?.album }} album</p>
         </div>
         <div class="photo">
-          <!--          <img :src="`@/src/assets/${song?.filename}`">-->
+          <img :src="`${API_URL}/api/auth/getSongImage/${song?.id}`">
         </div>
         <div class="player">
           <a :href="`https://www.youtube.com/results?search_query=${song?.author}+${song?.title}`" target="_blank"
@@ -146,7 +147,7 @@ function goToProfile() {
     </main>
     <footer>
       <div class="small-logo">
-        <!--        <img src="@/assets/shipify.svg" alt="shipify">-->
+        <img src="/src/assets/shipify.svg">
       </div>
       <div class="search-bar">
         <input v-model="search" id='inpt' type="text" name="search" placeholder="search for your fav music"
@@ -160,8 +161,8 @@ function goToProfile() {
         </section>
       </div>
       <div class="profile-link">
-        <p @click="goToProfile">profile</p>
-        <!--          <img src="@/assets/undraw_pic_profile_re_lxn6.svg" alt="profile" @click="goToProfile">-->
+        <p @click="goToProfile">Profile</p>
+        <img src="/src/assets/undraw_pic_profile_re_lxn6.svg" @click="goToProfile">
       </div>
     </footer>
   </div>
@@ -329,10 +330,6 @@ select::-webkit-scrollbar {
 
   * {
     font-size: 2vh;
-  }
-
-  .logo {
-    width: 90%;
   }
 
   main {

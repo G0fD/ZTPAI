@@ -1,8 +1,11 @@
 <script setup>
 import {useRouter} from "vue-router";
 import {useAuthenticated} from "@/composables/authenticated";
+import {onMounted, ref} from "vue";
+import {API_URL} from "@/common/constant";
 
 const router = useRouter()
+const userType = ref();
 
 useAuthenticated()
 
@@ -24,12 +27,34 @@ function onMatchesClick() {
   })
 }
 
+function onLogoClick() {
+  router.push({
+    name: "site"
+  })
+}
+
+onMounted(() => {
+  fetch(API_URL + "/api/auth/validate/isAdmin", {
+    headers: {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    }
+  })
+      .then(response => response.text())
+      .then(data => {
+        userType.value = data
+        console.log(userType.value)
+      })
+      .catch(error => {
+        console.error(error)
+      });
+})
+
 </script>
 
 <template>
   <div class="container">
     <nav>
-      <!--      <img class="small-logo" src="/img/shipify.svg" alt="shipify" onclick="window.location='main';">-->
+      <img class="small-logo" src="/src/assets/shipify.svg" alt="shipify" @click.prevent="onLogoClick">
       <ul>
         <li>
           <a href="#" class="button" @click.prevent="onLogoutClick">Settings</a>
@@ -38,9 +63,7 @@ function onMatchesClick() {
           <a href="#" class="button" @click.prevent="onMatchesClick">My matches</a>
         </li>
         <li>
-          <a href="#" class="button" @click.prevent="onAddSongClick">Add song</a>
-        </li>
-        <li>
+          <a v-if="userType==='administrator'" href="#" class="button" @click.prevent="onAddSongClick">Add song</a>
         </li>
         <li>
           <p>SHIPify made by Jakub Jajkowicz</p>

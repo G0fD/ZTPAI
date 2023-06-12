@@ -28,6 +28,7 @@ public class UserService {
 
         return ProfileDTO.builder()
                 .userId(user.getId())
+                .roleId(user.getUserRole().getId())
                 .username(user.getUsername())
                 .email(userDetails.getEmail())
                 .name(userDetails.getName())
@@ -38,6 +39,8 @@ public class UserService {
     }
 
     public List<MatchesDTO> getMatches() {
+
+
         Integer id = 1;
         User user1 = userRepository.getReferenceById(id);
         List<User> userList = userRepository.findUsersByMatchedUser1(user1);

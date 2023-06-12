@@ -21,4 +21,8 @@ public class GenreService {
         }
         return genreNames;
     }
+
+    public Genre getGenreById(Integer id) {
+        return genreRepository.getReferenceById(id);
+    }
 }

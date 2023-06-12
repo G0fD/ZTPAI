@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 public class ProfileDTO {
     private Integer userId;
+    private Integer roleId;
     private String username;
     private String email;
     private String name;

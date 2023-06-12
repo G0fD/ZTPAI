@@ -21,4 +21,8 @@ public class ProviderService {
         }
         return providersName;
     }
+
+    public Provider getProviderById(Integer id) {
+        return providerRepository.getReferenceById(id);
+    }
 }

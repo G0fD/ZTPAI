@@ -17,7 +17,9 @@ async function onSubmit() {
   const data = await response.json();
   if (response.ok) {
     sessionStorage.setItem("token", data.token)
-    await router.push("site")
+    await router.push({
+      name: "site"
+    })
   }
 }
 </script>

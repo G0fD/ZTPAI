@@ -1,24 +1,48 @@
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useAuthenticated} from "@/composables/authenticated";
+import {API_URL} from "@/common/constant";
+import {useRouter} from "vue-router";
 
 const file = ref()
 const form = ref({})
+const router = useRouter();
 
 useAuthenticated()
 
-function addSong(event) {
-  console.log(event)
+onMounted(() => {
+  fetch(API_URL + "/api/auth/validate/isAdmin", {
+    headers: {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    }
+  })
+      .then(response => response.text())
+      .then(data => {
+        if (data !== "administrator") {
+          console.log("not admin")
+          router.push({
+            name: "profile"
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      });
+})
 
+function addSong(event) {
   const formData = new FormData();
 
   formData.append('file', file.value);
-  formData.append('title', form.value.title);
-
+  formData.append('title', form.value.title)
+  formData.append('author', form.value.author)
+  formData.append('album', form.value.album)
+  formData.append('providers', form.value.providers)
+  formData.append('genres', form.value.genres)
   // formData.append('data', new Blob([JSON.stringify(form)], { type: 'application/json' }));
 
 
-  fetch('/upload', {
+  fetch(API_URL + "/api/auth/addSong", {
     method: 'POST',
     body: formData,
     headers: {
@@ -26,6 +50,11 @@ function addSong(event) {
       //'Content-Type': 'multipart/form-data',
     }
   })
+
+  router.push({
+    name: "addSong"
+  });
+
 }
 
 function onUpload(event) {
@@ -38,9 +67,9 @@ function onUpload(event) {
   <h1>UPLOAD</h1>
   <form @submit.prevent.stop="addSong">
     <section class="insert">
-      <input type="text" name="title" placeholder="Song title">
-      <input type="text" name="author" placeholder="Author name">
-      <input type="text" name="album" placeholder="Album name">
+      <input v-model="form.title" type="text" name="title" placeholder="Song title">
+      <input v-model="form.author" type="text" name="author" placeholder="Author name">
+      <input v-model="form.album" type="text" name="album" placeholder="Album name">
       <input type="file" @change="onUpload" name="file" accept=".jpg, .png, .pdf">
     </section>
     <section class="select">

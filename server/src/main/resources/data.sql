@@ -50,10 +50,10 @@ values (3, 2);
 insert into user_preferences
 values (3, 1);
 
-insert into songs
-values (1, 'Midnight', 'Set It Off', 'midnight.jpg', 'Killer In The Mirror');
-insert into songs
-values (2, 'Hotel Kalifornia', 'Hollywood Undead', 'hk.png', 'Ruin My Life');
+insert into songs(album, author, filename, title)
+values ('Midnight', 'Set It Off', 'midnight.jpg', 'Killer In The Mirror');
+insert into songs(album, author, filename, title)
+values ('Hotel Kalifornia', 'Hollywood Undead', 'hk.png', 'Ruin My Life');
 
 insert into song_providers
 values (1, 1);
