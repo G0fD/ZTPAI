@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ZTPAI
 =======
 # SHIPify
@@ -71,4 +70,3 @@ Schemat został wygenerowany przez intelliJ IDEA 2022.3.2
 ## Profil admin, Add song
 
 ![s7.png](s7.png)
->>>>>>> dev12
